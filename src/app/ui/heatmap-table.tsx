@@ -1,6 +1,6 @@
 "use client";
 
-import { checkSites } from "../lib/actions";
+import { checkSitesByName } from "../lib/actions";
 
 // type DayEntry = {
 //   day: string; // formato YYYY-MM-DD
@@ -51,7 +51,7 @@ export default function CustomHeatmap() {
         Cada cuadro representa un día desde enero
       </div> */}
       <button
-        onClick={() => checkSites()}
+        onClick={() => checkSitesByName("Sibas")}
         className="px-8 py-2 bg-amber-500 rounded-lg"
       >
         Action

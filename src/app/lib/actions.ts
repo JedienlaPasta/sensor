@@ -9,51 +9,52 @@ type Site = {
   site_url: string;
 };
 
-export async function checkSites() {
-  const sites = await sql<Site[]>`
-    SELECT * FROM sites
-    ORDER BY id DESC
-    LIMIT 3
-  `;
-  console.log(sites);
+export async function checkSitesByName(siteName: string) {
+  try {
+    const site = await sql<Site[]>`
+      SELECT * FROM sites
+      WHERE LOWER(site_name) = ${siteName.toLowerCase()}
+    `;
 
-  await Promise.all(
-    sites.map(async (site) => {
-      const start = Date.now();
+    if (site.length === 0) {
+      return { ok: false, error: "Site not found" };
+    }
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000);
-      try {
-        const response = await fetch(site.site_url, {
-          method: "GET",
-          signal: controller.signal,
-        });
-        clearTimeout(timeout);
-        const duration = Date.now() - start;
-        console.log("id_site: ", site.id);
+    const target = site[0];
+    const start = Date.now();
 
-        await sql`
-          INSERT INTO site_status (status, duration, id_site, error_msg)
-          VALUES (${response.status}, ${duration}, ${site.id}, ${null})
-        `;
-        console.log(
-          `Checked ${site.site_url} in ${duration}ms with status ${response.status}`
-        );
-      } catch (error: unknown) {
-        clearTimeout(timeout);
-        let errorMsg = "Unknown error";
-        if (error instanceof Error) {
-          errorMsg = error.name === "AbortError" ? "Timeout" : error.message;
-        }
+    try {
+      const response = await fetch(target.site_url, { method: "GET" });
+      const duration = Date.now() - start;
 
-        await sql`
-          INSERT INTO site_status (status, duration, id_site, error_msg)
-          VALUES (${500}, ${null}, ${site.id}, ${errorMsg})
-        `;
-        console.log(`Error checking ${site.site_url}: ${errorMsg}`);
+      await sql`
+        INSERT INTO site_status (status, duration, id_site, error_msg)
+        VALUES (${response.status}, ${duration}, ${target.id}, ${null})
+      `;
+
+      console.log(`✔️ Guardado: ${target.site_url} (${response.status})`);
+      return {
+        ok: true,
+        site: target.site_name,
+        status: response.status,
+        duration: duration,
+      };
+    } catch (error: unknown) {
+      let message = "Unknown error";
+      if (error instanceof Error) {
+        message = error.message;
       }
-    })
-  );
 
-  return { ok: true };
+      await sql`
+        INSERT INTO site_status (status, duration, id_site, error_msg)
+        VALUES (${500}, ${null}, ${target.id}, ${message})
+      `;
+
+      console.log(`❌ Error checking ${target.site_url}: ${message}`);
+      return { ok: false, site: target.site_name, error: message };
+    }
+  } catch (error) {
+    console.log(error);
+    return { ok: false, error: "Internal server error" };
+  }
 }
