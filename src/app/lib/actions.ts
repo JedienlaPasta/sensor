@@ -9,12 +9,6 @@ type Site = {
   site_url: string;
 };
 
-type SiteStatus = {
-  id_site: number;
-  status: number;
-  duration: number | null;
-};
-
 export async function checkSites() {
   const sites = await sql<Site[]>`
     SELECT * FROM sites
@@ -30,15 +24,17 @@ export async function checkSites() {
         const duration = Date.now() - start;
 
         await sql`
-        INSERT INTO site_status (id_site, status, duration)
-        VALUES (${site.id}, ${response.status}, ${duration})
-    `;
-      } catch (error) {
-        console.log(error);
-        await sql<SiteStatus[]>`
-        INSERT INTO site_status (id_site, status, duration)
-        VALUES (${site.id}, ${500}, null)
-    `;
+          INSERT INTO site_status (id_site, status, duration, error_msg)
+          VALUES (${site.id}, ${response.status}, ${duration}, ${null})
+        `;
+      } catch (error: any) {
+        console.error("Error en fetch:", error);
+        await sql`
+          INSERT INTO site_status (id_site, status, duration, error_msg)
+          VALUES (${site.id}, ${500}, ${null}, ${String(
+          error?.message ?? error
+        )})
+        `;
       }
     })
   );
