@@ -2,13 +2,25 @@ name: Monitor sites
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: '*/5 * * * *'     # Every 5 minutes
+    - cron: '2-59/5 * * * *'  # Offset by 2 minutes
   workflow_dispatch:
-
+  
+concurrency:
+  group: 'site-status-check'
+  cancel-in-progress: true
+  
 jobs:
   check-sites:
     runs-on: ubuntu-latest
 
+    #steps:
+      #- name: Ejecutar monitoreo
+        #run: curl -m 15 -X GET https://sensor-git-main-beneficios.vercel.app/api/check-sites
+
     steps:
-      - name: Ejecutar monitoreo
-        run: curl -X GET https://sensor-git-main-beneficios.vercel.app/api/check-sites
+      - name: Call all sites individually
+        run: |
+          curl -m 15 -X GET https://sensor-git-main-beneficios.vercel.app/api/check-sites
+          curl -m 15 -X GET https://sensor-git-main-beneficios.vercel.app/api/check-sites
+          curl -m 10 -X GET "https://YOUR_PROJECT.vercel.app/api/check-site?name=beneficios"
