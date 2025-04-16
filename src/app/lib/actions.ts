@@ -15,6 +15,7 @@ export async function checkSites() {
     ORDER BY id DESC
     LIMIT 3
   `;
+  console.log(sites);
 
   await Promise.all(
     sites.map(async (site) => {
@@ -24,9 +25,12 @@ export async function checkSites() {
         const duration = Date.now() - start;
 
         await sql`
-          INSERT INTO site_status (id_site, status, duration, error_msg)
-          VALUES (${site.id}, ${response.status}, ${duration}, ${null})
+          INSERT INTO site_status (status, duration, id_site, error_msg)
+          VALUES (${response.status}, ${duration}, ${site.id}, ${null})
         `;
+        console.log(
+          `Checked ${site.site_url} in ${duration}ms with status ${response.status}`
+        );
       } catch (error: unknown) {
         let errorMsg = "Unknown error";
         if (error instanceof Error) {
@@ -37,6 +41,7 @@ export async function checkSites() {
           INSERT INTO site_status (id_site, status, duration, error_msg)
           VALUES (${site.id}, ${500}, ${null}, ${errorMsg})
         `;
+        console.log(`Error checking ${site.site_url}: ${errorMsg}`);
       }
     })
   );
