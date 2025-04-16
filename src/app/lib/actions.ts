@@ -23,6 +23,7 @@ export async function checkSites() {
       try {
         const response = await fetch(site.site_url, { method: "GET" });
         const duration = Date.now() - start;
+        console.log("id_site: ", site.id);
 
         await sql`
           INSERT INTO site_status (status, duration, id_site, error_msg)
@@ -39,7 +40,7 @@ export async function checkSites() {
 
         await sql`
           INSERT INTO site_status (status, duration, id_site, error_msg)
-          VALUES (${500}, null, ${site.id}, ${errorMsg})
+          VALUES (${500}, ${null}, ${site.id}, ${errorMsg})
         `;
         console.log(`Error checking ${site.site_url}: ${errorMsg}`);
       }
