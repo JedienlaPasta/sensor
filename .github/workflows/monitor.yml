@@ -1,0 +1,14 @@
+name: Monitor sitios
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-sites:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ejecutar monitoreo
+        run: curl -X GET https://TU_DOMINIO.vercel.app/api/check-sites
