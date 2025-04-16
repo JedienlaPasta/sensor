@@ -27,13 +27,15 @@ export async function checkSites() {
           INSERT INTO site_status (id_site, status, duration, error_msg)
           VALUES (${site.id}, ${response.status}, ${duration}, ${null})
         `;
-      } catch (error: any) {
-        console.error("Error en fetch:", error);
+      } catch (error: unknown) {
+        let errorMsg = "Unknown error";
+        if (error instanceof Error) {
+          errorMsg = error.message;
+        }
+
         await sql`
           INSERT INTO site_status (id_site, status, duration, error_msg)
-          VALUES (${site.id}, ${500}, ${null}, ${String(
-          error?.message ?? error
-        )})
+          VALUES (${site.id}, ${500}, ${null}, ${errorMsg})
         `;
       }
     })
