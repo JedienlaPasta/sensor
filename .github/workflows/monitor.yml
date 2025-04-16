@@ -1,4 +1,4 @@
-name: Monitor sitios
+name: Monitor sites
 
 on:
   schedule:
@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Ejecutar monitoreo
-        run: curl -X GET https://TU_DOMINIO.vercel.app/api/check-sites
+        run: curl -X GET https://sensor-git-main-beneficios.vercel.app.vercel.app/api/check-sites

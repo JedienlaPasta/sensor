@@ -34,6 +34,7 @@ export async function checkSites() {
         VALUES (${site.id}, ${response.status}, ${duration})
     `;
       } catch (error) {
+        console.log(error);
         await sql<SiteStatus[]>`
         INSERT INTO site_status (id_site, status, duration)
         VALUES (${site.id}, ${500}, null)
