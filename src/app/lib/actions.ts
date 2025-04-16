@@ -20,8 +20,15 @@ export async function checkSites() {
   await Promise.all(
     sites.map(async (site) => {
       const start = Date.now();
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
       try {
-        const response = await fetch(site.site_url, { method: "GET" });
+        const response = await fetch(site.site_url, {
+          method: "GET",
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
         const duration = Date.now() - start;
         console.log("id_site: ", site.id);
 
@@ -33,9 +40,10 @@ export async function checkSites() {
           `Checked ${site.site_url} in ${duration}ms with status ${response.status}`
         );
       } catch (error: unknown) {
+        clearTimeout(timeout);
         let errorMsg = "Unknown error";
         if (error instanceof Error) {
-          errorMsg = error.message;
+          errorMsg = error.name === "AbortError" ? "Timeout" : error.message;
         }
 
         await sql`
