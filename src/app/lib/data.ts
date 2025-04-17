@@ -17,7 +17,6 @@ type Status = {
 };
 
 export const fetchStatusDataByName = async (siteName: string) => {
-  export const dynamic = "force-dynamic";
   try {
     const site = await sql<Site[]>` 
       SELECT * FROM sites
