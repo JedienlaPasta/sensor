@@ -5,8 +5,8 @@ import "../styles/globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Sensor",
-  description: "Sensor de estado de servicios Municipales",
+  title: "Signal",
+  description: "Estado de servicios Municipales",
 };
 
 export default function RootLayout({
