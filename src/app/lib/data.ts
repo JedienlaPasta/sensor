@@ -30,6 +30,7 @@ export const fetchStatusDataByName = async (siteName: string) => {
       SELECT * FROM site_status
       WHERE id_site = ${site[0].id}
       ORDER BY id DESC
+      LIMIT 90
     `;
     if (status_info.length === 0) {
       return { site: site[0], status: [] };
