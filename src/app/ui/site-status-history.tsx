@@ -24,6 +24,7 @@ type Props = {
 };
 
 export default async function SiteStatusHistory({ siteName }: Props) {
+  console.log("🔄 Fetching status for:", siteName);
   const { site, status } = (await fetchStatusDataByName(siteName)) as {
     site: Site | null;
     status: Status[];
