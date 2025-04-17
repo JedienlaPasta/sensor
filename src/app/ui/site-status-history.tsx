@@ -1,6 +1,8 @@
 import { fetchStatusDataByName } from "../lib/data";
 import StatusTile from "./status-tile";
 
+export const dynamic = "force-dynamic";
+
 // Define the Site type
 type Site = {
   id: number;
