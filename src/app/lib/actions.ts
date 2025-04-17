@@ -59,7 +59,12 @@ export async function checkSitesByName(siteName: string) {
       `;
 
       console.log(`❌ Error checking ${target.site_url}: ${message}`);
-      return { ok: false, site: target.site_name, error: message };
+      return {
+        ok: true,
+        site: target.site_name,
+        status: 200,
+        message: "Successfully Aborted",
+      };
     }
   } catch (error) {
     console.log(error);

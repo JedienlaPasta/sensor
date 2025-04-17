@@ -29,7 +29,7 @@ export default async function SiteStatusHistory({ siteName }: Props) {
 
   if (!site) {
     return (
-      <div className="p-6 bg-white shadow-md border border-gray-100">
+      <div className="p-6 bg-transparent">
         <h2 className="text-lg font-bold mb-2 text-gray-700">{siteName}</h2>
         <p className="text-rose-500 text-sm flex items-center">
           <svg
@@ -62,7 +62,7 @@ export default async function SiteStatusHistory({ siteName }: Props) {
   const currentStatus = status[0].status;
 
   return (
-    <div className="p-6 flex flex-col gap-3 bg-white  border border-gray-100">
+    <div className="p-6 flex flex-col gap-3 bg-transparent">
       <div className="flex items-baseline justify-between">
         <h2 className="text-lg font-semibold text-slate-700 flex items-center">
           {site?.site_name || "Unknown Site"}
@@ -101,7 +101,7 @@ export default async function SiteStatusHistory({ siteName }: Props) {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          Últimos {status.length} checks
+          Últimas {status.length} consultas
         </p>
         <p className="text-xs text-gray-500 flex items-center px-2">
           <svg
