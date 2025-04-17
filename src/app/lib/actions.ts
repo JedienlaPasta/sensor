@@ -23,8 +23,15 @@ export async function checkSitesByName(siteName: string) {
     const target = site[0];
     const start = Date.now();
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     try {
-      const response = await fetch(target.site_url, { method: "GET" });
+      const response = await fetch(target.site_url, {
+        method: "GET",
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
       const duration = Date.now() - start;
 
       await sql`
@@ -40,6 +47,7 @@ export async function checkSitesByName(siteName: string) {
         duration: duration,
       };
     } catch (error: unknown) {
+      clearTimeout(timeout);
       let message = "Unknown error";
       if (error instanceof Error) {
         message = error.message;

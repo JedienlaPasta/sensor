@@ -7,7 +7,6 @@ export default async function Heatmap() {
 
   return (
     <div>
-      {/* <h2 className="text-xl font-bold mb-4">Historial de Disponibilidad</h2> */}
       <CustomHeatmap />
     </div>
   );
