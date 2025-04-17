@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import SiteStatusHistory from "./ui/site-status-history";
 import { righteous } from "./ui/fonts";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="containers mx-auto min-w-fit w-fit px-4">
