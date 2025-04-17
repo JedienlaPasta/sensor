@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} font-sans antialiased`} style={{ fontFamily: `var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif` }}>{children}</body>
+    <html lang="es">
+      <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
 }
