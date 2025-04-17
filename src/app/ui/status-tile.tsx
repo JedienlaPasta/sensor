@@ -2,6 +2,7 @@
 import { formatDate } from "../lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Status } from "./site-status-history";
+import { useState } from "react";
 
 type StatusTileProps = {
   interval: Status | null;
@@ -9,6 +10,8 @@ type StatusTileProps = {
 };
 
 export default function StatusTile({ interval, index }: StatusTileProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
   if (!interval) {
     return (
       <motion.div
@@ -28,7 +31,7 @@ export default function StatusTile({ interval, index }: StatusTileProps) {
 
   const hoverColor = {
     0: "hover:bg-gray-300",
-    200: "hover:bg-teal-600",
+    200: "hover:bg-teal-500",
     500: "hover:bg-rose-600",
   };
 
@@ -41,21 +44,25 @@ export default function StatusTile({ interval, index }: StatusTileProps) {
   return (
     <motion.div
       key={index}
-      className={`w-[0.375rem] h-9 group rounded-[1.5px] hover:bg-teal-600 ${tileColor} ${tileHoverColor}`}
+      className={`w-[0.375rem] h-9 group rounded-[1.5px] ${tileColor} ${tileHoverColor}`}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2, delay: index * 0.01 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <AnimatePresence>
-        {/* Tooltip that appears on hover */}
-        <motion.div
-          className="absolute -top-7 z-10 hidden -translate-x-[50%] whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-xs text-white group-hover:flex"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-        >
-          {formatDate(interval.created_at)}
-        </motion.div>
+        {isHovered && (
+          <motion.div
+            className="absolute -top-7 z-10 -translate-x-[50%] whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-xs text-white"
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.1 }}
+          >
+            {formatDate(interval.created_at)}
+          </motion.div>
+        )}
       </AnimatePresence>
     </motion.div>
   );

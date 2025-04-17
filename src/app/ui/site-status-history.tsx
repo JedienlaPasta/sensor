@@ -1,5 +1,4 @@
 import { fetchStatusDataByName } from "../lib/data";
-import { formatDate } from "../lib/utils";
 import StatusTile from "./status-tile";
 
 // Define the Site type
@@ -30,7 +29,7 @@ export default async function SiteStatusHistory({ siteName }: Props) {
 
   if (!site) {
     return (
-      <div className="p-6 rounded-lg bg-white shadow-md border border-gray-100">
+      <div className="p-6 bg-white shadow-md border border-gray-100">
         <h2 className="text-lg font-bold mb-2 text-gray-700">{siteName}</h2>
         <p className="text-rose-500 text-sm flex items-center">
           <svg
@@ -61,23 +60,19 @@ export default async function SiteStatusHistory({ siteName }: Props) {
   ];
 
   const currentStatus = status[0].status;
-  const currentTime = status[0].created_at;
-  console.log(siteName, currentStatus, "-", formatDate(currentTime));
 
   return (
-    <div className="p-6 flex flex-col gap-3 rounded-lg bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+    <div className="p-6 flex flex-col gap-3 bg-white  border border-gray-100">
       <div className="flex items-baseline justify-between">
-        <h2 className="text-lg font-semibold text-gray-800 flex items-center">
+        <h2 className="text-lg font-semibold text-slate-700 flex items-center">
           {site?.site_name || "Unknown Site"}
-          <span className="ml-2 text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+          <span className="ml-2 text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600">
             {site?.site_url.replace(/(^\w+:|^)\/\//, "").split("/")[0]}
           </span>
         </h2>
         <p
-          className={`text-sm font-medium px-2 py-1 rounded-full ${
-            currentStatus === 200
-              ? "bg-teal-50s text-teal-600"
-              : "bg-rose-50s text-rose-600"
+          className={`text-sm font-medium px-2 py-1 ${
+            currentStatus === 200 ? "text-teal-600" : "text-rose-600"
           }`}
         >
           {currentStatus === 200 ? "Normal" : "Interrumpido"}
@@ -108,7 +103,7 @@ export default async function SiteStatusHistory({ siteName }: Props) {
           </svg>
           Últimos {status.length} checks
         </p>
-        <p className="text-xs text-gray-500 flex items-center">
+        <p className="text-xs text-gray-500 flex items-center px-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-3 w-3 mr-1"

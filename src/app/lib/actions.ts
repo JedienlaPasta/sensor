@@ -39,7 +39,7 @@ export async function checkSitesByName(siteName: string) {
         VALUES (${response.status}, ${duration}, ${target.id}, ${null})
       `;
 
-      console.log(`✔️ Guardado: ${target.site_url} (${response.status})`);
+      console.log(`✔️ Saved: ${target.site_url} (${response.status})`);
       return {
         ok: true,
         site: target.site_name,
