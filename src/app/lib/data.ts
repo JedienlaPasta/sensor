@@ -36,6 +36,8 @@ export const fetchStatusDataByName = async (siteName: string) => {
       return { site: site[0], status: [] };
     }
 
+    console.log(status_info);
+
     return {
       site: site[0],
       status: status_info,
