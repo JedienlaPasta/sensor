@@ -7,7 +7,7 @@ WORKDIR /app
 # Deps phase
 FROM base AS deps
 RUN npm install -g pnpm
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 RUN pnpm install --no-frozen-lockfile
 
 # Build phase
