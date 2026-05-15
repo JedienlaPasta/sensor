@@ -16,7 +16,7 @@ export default function StatusTile({ interval, index }: StatusTileProps) {
     return (
       <motion.div
         key={index}
-        className="w-[0.375rem] h-9 rounded-[1.5px] bg-gray-300"
+        className="w-1.5 h-9 rounded-[1.5px] bg-gray-300"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2, delay: index * 0.01 }}
@@ -44,7 +44,7 @@ export default function StatusTile({ interval, index }: StatusTileProps) {
   return (
     <motion.div
       key={index}
-      className={`w-[0.375rem] h-9 group rounded-[1.5px] ${tileColor} ${tileHoverColor}`}
+      className={`w-1.5 h-9 group rounded-[1.5px] ${tileColor} ${tileHoverColor}`}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2, delay: index * 0.01 }}
